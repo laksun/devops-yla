@@ -20,7 +20,9 @@ class TestMain(unittest.TestCase):
         mock_system.assert_called_with(
             "find /var/log/amazon/ -xdev -path -mmin -60 ! -perm -o=r -ls -exec chmod -c rx {} \\;"
         )
-        mock_restart_agent.assert_called_once()  # Add this line to ensure mock_restart_agent is called
+        mock_restart_agent.assert_called_once()  
+
+
 
 
 if __name__ == "__main__":

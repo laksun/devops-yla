@@ -46,7 +46,7 @@ def restart_agent(path, name):
     os.system(f"pkill -9 -f {name}")
     time.sleep(10)
     logging.info(f"starting {name}")
-    ret = subprocess.call(f"{path} start, shell=True")
+    ret = subprocess.call(f"{path} start", shell=True)
     return ret
 
 
@@ -99,3 +99,7 @@ def main():
         except Exception as key:
             logging.error(f"Error {key}")
         time.sleep(60)
+
+
+if __name__ == "__main__":
+    main()
