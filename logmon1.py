@@ -56,7 +56,7 @@ def main():
 
     chown_list = [
         f"{fluentd_config.fluentd_user} {fluentd_config.var_log_path}",
-        f"{fluentd_config.fluentd_user} {fluentd_config.var_log_path}",
+        f"{fluentd_config.fluentd_user} {fluentd_config.etc_path}",
     ]
     set_environ()
     fluentd_check_counter = 0
@@ -76,6 +76,14 @@ def main():
                     fluentd_check_counter = 0
                 else:
                     fluentd_check_counter = 0
+
+                for entry in chown_list:
+                    if os.path.exists(entry.split(" ")[1]):
+                        os.system(f"chown -cR {entry}")
+                for entry in chmodList:
+                    if os.path.exists(entry.split(" ")[1]):
+                        os.system(f"chmod -R {entry}")
+
                 for entry in chmod_recursive:
                     if os.path.exists(entry.split(" ")[2]):
                         find_perm = entry.split(" ")[0]
