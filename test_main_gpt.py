@@ -6,19 +6,19 @@ import logging
 import time
 
 # Assuming main and other functions are imported from the module
-from your_module import main, set_environ, is_agent_running, restart_agent
+from logmon1 import main, set_environ, is_agent_running, restart_agent
 
 
 class TestMainFunction(unittest.TestCase):
 
-    @patch("your_module.time.sleep", return_value=None)  # Prevent actual sleeping
-    @patch("your_module.os.system")  # Mock os.system to avoid real system calls
+    @patch("logmon1.time.sleep", return_value=None)  # Prevent actual sleeping
+    @patch("logmon1.os.system")  # Mock os.system to avoid real system calls
     @patch(
-        "your_module.subprocess.call", return_value=0
+        "logmon1.subprocess.call", return_value=0
     )  # Mock subprocess call to always return 0
-    @patch("your_module.LogmonCommon")
+    @patch("logmon1.LogmonCommon")
     @patch(
-        "your_module.is_agent_running", side_effect=[False, False, True]
+        "logmon1.is_agent_running", side_effect=[False, False, True]
     )  # Simulate agent stopping and starting
     def test_main(
         self,
