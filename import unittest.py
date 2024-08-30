@@ -22,5 +22,18 @@ class TestMain(unittest.TestCase):
         )
 
 
+def test_main(self, mock_sleep, mock_system, mock_restart_agent, mock_is_agent_running):
+    mock_is_agent_running.return_value = False
+    with self.assertRaises(TimeoutError):
+        main()
+    mock_is_agent_running.assert_called_once_with("/etc/init.d/fluentd_user", "status")
+    mock_restart_agent.assert_called_once_with(
+        "/etc/init.d/fluentd_user", "fluentd_user"
+    )
+    mock_system.assert_called_with(
+        "find /var/log/amazon/ -xdev -path -mmin -60 ! -perm -o=r -ls -exec chmod -c rx {} \\;"
+    )
+
+
 if __name__ == "__main__":
     unittest.main()
