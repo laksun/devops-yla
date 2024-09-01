@@ -1,0 +1,9 @@
+- Read a text file given path or s3 url
+    - input: path or s3 url of text file
+    - output: text content of the file
+- Parse the text file to a list of sentences
+    - input: text content of the file
+    - output: list of sentences
+- Read a list of words from a text file
+    - input: path or s3 url of text file
+    - output: list of words
