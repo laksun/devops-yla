@@ -6,3 +6,5 @@ hobby
 examples/__pycache__/request_joke.cpython-312.pyc
 examples/__pycache__/test_request_joke.cpython-312-pytest-8.3.2.pyc
 examples/.pytest_cache
+examples/__pycache__/logmon_config_execution.cpython-312.pyc
+examples/__pycache__/test_logmon_config_execution.cpython-312-pytest-8.3.2.pyc
