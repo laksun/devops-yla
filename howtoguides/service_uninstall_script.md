@@ -62,6 +62,3 @@ For example, to disable and remove packages related to `httpd`:
 ```bash
 ./manage_service.sh httpd
 ```
-
-I am planning to create an instance using the base Amazon Linux 2 AMI for testing a new Fluentd package. This instance will be temporary and used solely for development and testing purposes. I want to ensure that the instance is clean and doesn't have any unnecessary services running. This script will help me manage the service and package cleanup efficiently.
-```
