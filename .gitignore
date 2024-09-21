@@ -18,3 +18,4 @@ logmon/
 # Ignore all contents in 'jira-tasks' directory
 jira-tasks/
 ruby_examples/
+mac_local

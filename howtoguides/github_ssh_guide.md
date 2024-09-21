@@ -124,3 +124,67 @@ This warning is informing you that the `-K` and `-A` flags are deprecated in the
    It should list your SSH key, indicating it has been added to the SSH agent and the macOS keychain.
 
 Using these updated commands will prevent the warning from appearing again. Let me know if you need any more help!
+
+## session issue
+
+The issue you're facing is likely because the SSH key is not being loaded into the SSH agent automatically when you open a new terminal session. When you start a new terminal, the SSH agent does not remember the key added in a previous session, so you get a "Permission denied" error.
+
+### Steps to Fix the Issue
+
+1. **Ensure the SSH Agent is Started Automatically:**
+   Add the following lines to your shell configuration file (`~/.bashrc`, `~/.bash_profile`, or `~/.zshrc`, depending on your shell):
+
+   ```bash
+   # Start the ssh-agent and load the SSH key
+   eval "$(ssh-agent -s)"
+   ssh-add --apple-use-keychain ~/.ssh/sep_21_id
+   ```
+
+   This ensures that every time you open a new terminal, the SSH agent starts and the key is added automatically.
+
+2. **Add the Key to the macOS Keychain Permanently:**
+   
+   If you are on macOS, you can use the following command to permanently add the key to the keychain so that it persists across reboots:
+
+   ```bash
+   ssh-add --apple-use-keychain ~/.ssh/sep_21_id
+   ```
+
+3. **Modify the `config` File for Automatic Key Loading:**
+   
+   You can also create or modify your `~/.ssh/config` file to automatically use your SSH key when accessing GitHub:
+
+   1. Open or create the `~/.ssh/config` file:
+
+      ```bash
+      nano ~/.ssh/config
+      ```
+
+   2. Add the following lines to specify your key for GitHub:
+
+      ```bash
+      Host github.com
+        User git
+        HostName github.com
+        IdentityFile ~/.ssh/sep_21_id
+        UseKeychain yes
+        AddKeysToAgent yes
+      ```
+
+   3. Save and exit the file (press `Ctrl + X`, then `Y`, and `Enter`).
+
+4. **Check for Correct File Permissions:**
+   
+   Make sure that your SSH key files have the correct permissions. Run the following command to set the appropriate permissions:
+
+   ```bash
+   chmod 600 ~/.ssh/sep_21_id
+   ```
+
+5. **Restart the Terminal:**
+   
+   After making these changes, restart your terminal and try connecting to GitHub again.
+
+### Summary
+
+Adding the SSH key to the SSH agent in each terminal session is necessary because the SSH agent doesn’t persist keys across new terminal sessions by default. By adding the key to the macOS keychain or configuring it in the `~/.ssh/config` file, you ensure that the key is available in new sessions without needing to re-run the `ssh-add` command.
