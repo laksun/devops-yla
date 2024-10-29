@@ -392,3 +392,30 @@ By updating the playbook as shown, you can now deploy your Python application ac
 
 ## additional
 
+
+
+To check if a directory exists in Red Hat 9 using Ansible and, if it does, copy a file to a destination, you can use the `ansible.builtin.stat` module to check the directory existence and then conditionally copy the file. Here’s a sample playbook:
+
+```yaml
+- name: Check directory and conditionally copy file
+  hosts: target_host
+  become: yes
+  tasks:
+    - name: Check if directory exists
+      ansible.builtin.stat:
+        path: /path/to/directory
+      register: dir_check
+
+    - name: Conditionally copy file if directory exists
+      ansible.builtin.copy:
+        src: /path/to/source/file
+        dest: /path/to/directory/
+      when: dir_check.stat.exists
+```
+
+### Explanation
+
+1. **Directory Check**: The `ansible.builtin.stat` module checks for the existence of the specified directory and registers the result in `dir_check`.
+2. **Conditional Copy**: The `ansible.builtin.copy` task copies the file only if `dir_check.stat.exists` is `true`, meaning the directory exists.
+
+This ensures the file is copied only when the directory is present. Let me know if you need further customization!
