@@ -1,0 +1,1 @@
+"This package is designed for AMIs that support Python 3.8; both the `requirements.txt` file and the Logmon files are fully compatible with Python 3.8."

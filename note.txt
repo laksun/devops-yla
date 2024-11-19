@@ -1,0 +1,1 @@
+aws iam add-role-to-instance-profile --instance-profile-name MyInstanceProfile --role-name ec2_s3_role
