@@ -1,6 +1,6 @@
-Subject: Issue with InSpec Rule for Fluentd Log Files
+ Issue with InSpec Rule for Fluentd Log Files
 
-Hi team,
+
 
 I wanted to share an ongoing issue I've noticed with our current InSpec test for Fluentd logs during AMI validation. The InSpec rule:
 
