@@ -17,3 +17,9 @@ Finally, let’s add a Summary Report listener to our Thread Group that summaris
 
 summary
 With this, we have our basic JMeter script ready. Let’s run this in the GUI and take a look at the generated Summary Report:
+
+
+Slide 1:
+**Objective for Slide 1:**
+
+_"To provide an in-depth understanding of Apache JMeter as a performance testing tool, covering its features, setup, test execution, and result analysis, while exploring best practices to ensure system scalability, reliability, and optimal user experience."_
