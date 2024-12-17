@@ -75,6 +75,9 @@ except (TypeError, ValueError) as e:
 
 # enhanced data structure
 
+Below is an enhanced version of the `EndpointManager` class that stores both an endpoint and a client_id for each environment. The `get_environment_config()` class method returns both values together in a single dictionary. The method still includes type and value checks and is case-insensitive.
+
+```python
 class EndpointManager:
     ENV_CONFIG = {
         'development': {
@@ -120,3 +123,4 @@ try:
     # Output: {'endpoint': 'http://localhost:5000/api', 'client_id': 'dev-client-id-123'}
 except (TypeError, ValueError) as e:
     print(f"Error: {e}")
+```
