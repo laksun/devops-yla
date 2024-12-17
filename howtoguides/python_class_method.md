@@ -124,3 +124,25 @@ try:
 except (TypeError, ValueError) as e:
     print(f"Error: {e}")
 ```
+
+## Access endpoints
+
+Once you have the environment configuration dictionary from `get_environment_config()`, you can simply index into it to access the endpoint value. For example:
+
+```python
+config = EndpointManager.get_environment_config('DEVELOPMENT')
+endpoint = config['endpoint']
+print(endpoint)  
+# Output: http://localhost:5000/api
+```
+
+In this snippet, `config` is a dictionary returned by `get_environment_config()`, which looks something like:
+
+```python
+{
+    'endpoint': 'http://localhost:5000/api',
+    'client_id': 'dev-client-id-123'
+}
+```
+
+You can directly use `config['endpoint']` to get just the endpoint.
