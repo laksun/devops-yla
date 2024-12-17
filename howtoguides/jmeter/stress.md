@@ -112,3 +112,4 @@ sudo yum install stress -y
 ---
 
 This setup helps you simulate and measure system behavior under load, identifying potential bottlenecks in your Amazon Linux environment.
+
