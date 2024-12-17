@@ -71,3 +71,52 @@ try:
 except (TypeError, ValueError) as e:
     print(f"Error: {e}")
 ```
+
+
+# enhanced data structure
+
+class EndpointManager:
+    ENV_CONFIG = {
+        'development': {
+            'endpoint': 'http://localhost:5000/api',
+            'client_id': 'dev-client-id-123'
+        },
+        'staging': {
+            'endpoint': 'https://staging.example.com/api',
+            'client_id': 'staging-client-id-456'
+        },
+        'production': {
+            'endpoint': 'https://api.example.com',
+            'client_id': 'prod-client-id-789'
+        }
+    }
+
+    @classmethod
+    def get_environment_config(cls, environment):
+        # Check type: ensure environment is a string
+        if not isinstance(environment, str):
+            raise TypeError(f"Expected environment to be a string, got {type(environment).__name__} instead.")
+        
+        # Normalize and verify environment
+        normalized_env = environment.strip().lower()
+        if not normalized_env:
+            raise ValueError("Environment cannot be empty.")
+        
+        # Ensure environment is one of the known keys
+        if normalized_env not in cls.ENV_CONFIG:
+            raise ValueError(
+                f"Unknown environment '{environment}'. "
+                f"Available environments are: {', '.join(cls.ENV_CONFIG.keys())}."
+            )
+
+        # Return the entire configuration dictionary for the environment
+        return cls.ENV_CONFIG[normalized_env]
+
+
+# Example usage:
+try:
+    config = EndpointManager.get_environment_config('DEVELOPMENT')
+    print(config)
+    # Output: {'endpoint': 'http://localhost:5000/api', 'client_id': 'dev-client-id-123'}
+except (TypeError, ValueError) as e:
+    print(f"Error: {e}")
