@@ -146,3 +146,67 @@ In this snippet, `config` is a dictionary returned by `get_environment_config()`
 ```
 
 You can directly use `config['endpoint']` to get just the endpoint.
+
+## Test methods
+
+Below is an example of how you might write unit tests for the `get_environment_config()` method using Python’s built-in `unittest` framework. These tests cover various scenarios:
+
+- **Valid environment**: Ensure it returns the expected dictionary.
+- **Non-string environment**: Ensure it raises a `TypeError`.
+- **Empty environment**: Ensure it raises a `ValueError`.
+- **Unknown environment**: Ensure it raises a `ValueError`.
+  
+```python
+import unittest
+
+class TestEndpointManager(unittest.TestCase):
+    def test_valid_environment(self):
+        config = EndpointManager.get_environment_config('development')
+        self.assertIsInstance(config, dict)
+        self.assertIn('endpoint', config)
+        self.assertIn('client_id', config)
+        self.assertEqual(config['endpoint'], 'http://localhost:5000/api')
+        self.assertEqual(config['client_id'], 'dev-client-id-123')
+        
+        # Test a different environment (case-insensitive)
+        config = EndpointManager.get_environment_config('StAgInG')
+        self.assertEqual(config['endpoint'], 'https://staging.example.com/api')
+        self.assertEqual(config['client_id'], 'staging-client-id-456')
+        
+    def test_non_string_environment(self):
+        with self.assertRaises(TypeError):
+            EndpointManager.get_environment_config(None)
+        with self.assertRaises(TypeError):
+            EndpointManager.get_environment_config(123)
+
+    def test_empty_environment(self):
+        with self.assertRaises(ValueError):
+            EndpointManager.get_environment_config('')
+        with self.assertRaises(ValueError):
+            EndpointManager.get_environment_config('   ')
+
+    def test_unknown_environment(self):
+        with self.assertRaises(ValueError):
+            EndpointManager.get_environment_config('unknown')
+        with self.assertRaises(ValueError):
+            EndpointManager.get_environment_config('devprod')
+
+if __name__ == '__main__':
+    unittest.main()
+```
+
+**What’s Happening in Each Test:**
+
+- **`test_valid_environment`**:  
+  Checks that a known environment (e.g., `'development'`) returns a dictionary with the expected keys and values. Also tests case-insensitive input (`'StAgInG'`).
+
+- **`test_non_string_environment`**:  
+  Ensures that passing a non-string value raises `TypeError`.
+
+- **`test_empty_environment`**:  
+  Ensures that passing an empty or whitespace-only string raises `ValueError`.
+
+- **`test_unknown_environment`**:  
+  Ensures that passing an environment that isn’t in `ENV_CONFIG` raises `ValueError`.
+
+These tests should be run in an environment where the `EndpointManager` class is defined and can be imported.
