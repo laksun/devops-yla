@@ -148,3 +148,43 @@ if __name__ == "__main__":
 - Ensure logging is configured in the test environment to capture log outputs for debugging.
 
 This test suite covers all success and failure cases comprehensively.
+
+
+### add exception
+
+import unittest
+from unittest.mock import patch
+
+
+class TestGetVpce(unittest.TestCase):
+    @patch("module_name.vpce_exists")
+    @patch("module_name.logging")
+    def test_get_vpce_unexpected_exception(self, mock_logging, mock_vpce_exists):
+        from module_name import get_vpce
+
+        # Mock the `param_store` dictionary
+        param_store = {
+            "/core/logging/vpc-endpoint-vpce-dnsentries": "value:vpce-1234",
+            "aws_region": "us-east-1",
+            "use_proxy": False,
+        }
+
+        # Mock `vpce_exists` to raise an exception
+        mock_vpce_exists.side_effect = Exception("Unexpected error")
+
+        # Call the function
+        result = get_vpce("vpc-endpoint", param_store)
+
+        # Assertions
+        self.assertEqual(result, "")  # Expect empty string as return value
+        mock_vpce_exists.assert_called_once_with("vpce-1234", "us-east-1", False)
+
+        # Verify logging behavior
+        mock_logging.exception.assert_called_once_with("Error encountered in the function get_vpce")
+        mock_logging.info.assert_any_call(
+            "Invalid value for SSM Parameter /core/logging/vpc-endpoint-vpce-dnsentries: value:vpce-1234"
+        )
+
+
+if __name__ == "__main__":
+    unittest.main()
