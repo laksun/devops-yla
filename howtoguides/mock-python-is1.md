@@ -55,3 +55,20 @@ class TestVpceExists(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+####
+
+    @patch('module_name.get_service_client', side_effect=mock_get_service_client)
+    def test_vpce_exists_different_region(self, mock_service_client):
+        # Mock EC2 client and describe_vpc_endpoints response for a different region
+        mock_ec2_client = mock_service_client.return_value
+        mock_ec2_client.describe_vpc_endpoints.return_value = {"VpcEndpoints": [{"VpcEndpointId": "vpce-5678"}]}
+
+        from module_name import vpce_exists
+        result = vpce_exists("vpce-5678", "eu-west-1", False)
+
+        # Assertions
+        mock_service_client.assert_called_once_with("ec2", "eu-west-1", False)
+        mock_ec2_client.describe_vpc_endpoints.assert_called_once_with(VpcEndpointIds=["vpce-5678"])
+        self.assertTrue(result)
