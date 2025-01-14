@@ -188,3 +188,26 @@ class TestGetVpce(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+
+### case for vpce_exist is not called
+
+@patch("module_name.vpce_exists")
+    @patch("module_name.logging")
+    def test_get_vpce_missing_vpce_param(self, mock_logging, mock_vpce_exists):
+        from module_name import get_vpce
+
+        # Mock the `param_store` dictionary without the required vpce_param key
+        param_store = {
+            "aws_region": "us-east-1",
+            "use_proxy": False,
+        }
+
+        # Call the function
+        result = get_vpce("vpc-endpoint", param_store)
+
+        # Assertions
+        self.assertEqual(result, "")  # Expect empty string as return value
+        mock_vpce_exists.assert_not_called()  # Ensure vpce_exists is not called
+        mock_logging.info.assert_any_call("/core/logging/vpc-endpoint-vpce-dnsentries does not exist in Parameter store")
