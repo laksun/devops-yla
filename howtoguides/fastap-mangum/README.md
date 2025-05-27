@@ -8,7 +8,19 @@
  pip install --upgrade pip
  pip freeze > requirments.txt
  uvicorn main:app --reload
- pip install -t dependencies -r requirements.txt
+
+ docker run --rm \       
+  --platform linux/amd64 \
+  --entrypoint /bin/sh \
+  -v "$PWD":/var/task \
+  -w /var/task \
+  public.ecr.aws/lambda/python:3.13 \
+  -c "\
+    pip install --upgrade pip && \
+    pip install -r requirements.txt -t build/ \
+  "
+
+
  \t\t\t\tcd dependencies
  dir
  ls -l
