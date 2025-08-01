@@ -96,3 +96,28 @@ resource "aws_route53_record" "secondary" {
 If your original architecture was trying to have a “regional” record and a “global” CNAME pointing at it, you can fold that into this failover setup instead—just make the Route53 name itself be the common hostname with the two alias records as above.
 
 Do you want a version of this that wraps into a reusable module with inputs and outputs?
+
+
+variable "regional_record_list" {
+  type = list(string) # e.g. ["primary.example.net", "secondary.example.net"]
+}
+
+variable "failover_routing_policy_types" {
+  type = list(string) # e.g. ["PRIMARY", "SECONDARY"]
+}
+
+resource "aws_route53_record" "global_local_record" {
+  for_each = { for idx, target in zipmap(range(length(var.regional_record_list)), var.regional_record_list) : idx => target }
+
+  zone_id      = data.aws_route53_zone.global_local_zone.zone_id
+  name         = var.dns_hostname
+  type         = "CNAME"
+  ttl          = 300
+  records      = [each.value]
+
+  set_identifier = each.key == 0 ? "primary" : "secondary"
+
+  failover_routing_policy {
+    type = var.failover_routing_policy_types[each.key]
+  }
+}
